@@ -1,5 +1,4 @@
 
-
 class Cliente{
     constructor(nombre, apellido, domicilio, codigoPostal, telefono, dni, cuit){
         this.nombre= nombre;
@@ -12,7 +11,6 @@ class Cliente{
     }
 }
 
-// class CarteraClientes
 class ListaClientes{
     constructor(clientes){
         this.clientes=clientes;
@@ -63,7 +61,200 @@ function ingresar(){
             if(telefono == ""){
                 mensaje += "Ingrese el telefono" + '\n'
             }
-            if``
+            if(dni == ""){
+                mensaje += "Ingrese el dni" + '\n'
+            }
+
+            if(cuit == ""){
+                mensaje += "Ingrese el dni"
+            }
+
+            function chequeoDni(){
+                return dni
+            }
+
+            const found= baseClientes.clientes.findIndex(res =>{
+                return res.dni === chequeoDni
+            });
+
+            console.table(`============> $ ${found}`);
+
+            if(found -1){
+                mensaje = "No se puede ingresar un Cliente existente, solo se lo puede modificar";
+            }
+
+            let parrafoErrores= document.getElementById("mensaje");
+            parrafoErrores.innerText = mensaje;
+            return mensaje == "" ? true : false;
+        
         })
+        if (validar()){
+            let nuevoC= new Cliente(nombre, apellido, domicilio, codigoPostal, telefono, dni, cuit)
+                baseClientes.agregar(nuevoC);
+                document.getElementById("correcto").innerText = `Cliente ingresado correctamente`;
+                document.getElementById("formulario").reset();
+                console.table(baseClientes.clientes)
+             
+        }
+        document.getElementById("clientes-tbody").innerText = "" ;
+    } else{
+        let validarmodificacion = (() =>{
+            let mensaje = "";
+            if (nombre == ""){
+                mensaje += "Ingrese un nombre" + '\n';
+            }
+            if (apellido = ""){
+                mensaje += "Ingrese el apellido" + '\n';
+            }
+            if (domicilio = ""){
+                mensaje += "Ingrese el domicilio" + "\n";
+            }
+            if (codigoPostal = ""){
+                mensaje += "Ingrese el codigo postal" + '\n';
+            }
+            if (telefono = ""){
+                mensaje += "Ingrese el telefono" + '\n';
+            }
+            if (dni = ""){
+                mensaje += "Ingrese el dni";
+            }
+            if (cuit = ""){
+                mensaje += "Ingrese el cuit" + '\n';
+            }
+
+            let parrafoErrores = document.getElementById("mensaje");
+            parrafoErrores.innerText = mensaje;
+            return mensaje == "" ? true : false;
+        } )
+
+        if (validarmodificacion()){
+            function chequeoDni(){
+                return dni
+            }
+            const found = baseClientes.clientes.findIndex(res => {
+                return res.dni === chequeoDni;
+            })
+
+            console.table(`=======>>> ${found}`);
+            let nuevoC = new Cliente(nombre, apellido, domicilio, codigoPostal, telefono, dni, cuit)
+            baseClientes.clientes.splice(found, 1, nuevoC);
+            document.getElementById("correcto").innerText= `Cliente ingresado correctamente`;
+            document.getElementById("formulario").reset();
+            console.table(baseClientes.clientes)
+        }
+
+        document.getElementById("clientes-tbody").innerText = "";
+        document.getElementById("guardar").value= "Agregar";
     }
 }
+
+function listar(){
+    document.getElementById('mensaje').innerText = "";
+    let resultado = document.getElementById('clientes-tbody');
+    let resultado2 = document.getElementById('clientessimple-tbody');
+        if(baseClientes.clientes == ""){
+            resultado.innerHTML = "No se ha guardado ningun cliente aun";
+        } else {
+            document.getElementById('clientes-tbody').innerHTML = "";
+            baseClientes.clientes.forEach(clientes => resultado.innerHTML += `
+            <tr>
+            <td>${clientes.apellido}, ${clientes.nombre}</td>
+            <td>${clientes.domicilio}</td>
+            <td>${clientes.codigopostal}</td>
+            <td>${clientes.telefono}</td>
+            <td>${clientes.dni}</td>
+            <td>${clientes.cuit}</td>
+            <td>
+                <button id="${clientes.dni}" type="button" onclick="cargar(this.id)" class="btn btn-outline-light btn-sm"><i class="bi bi-pencil-square text-dark"></i></a>
+                <button id="${clientes.dni}" type="button" onclick="eliminar(this.id)" class="btn btn-outline-light btn-sm"><i class="bi bi-trash3-fill text-danger"></i></button>
+            </td>    
+        </tr>`)
+
+        document.getElementById("clientessimple-tbody").innerHTML = ""
+        baseClientes.clientes.forEach(clientes => resultado2.innerHTML += `
+        <tr>
+            <td>${clientes.apellido}, ${clientes.nombre}</td>
+            <td>${clientes.cuit}</td>
+        </tr>`);
+    
+        document.getElementById("correcto").innerText = "";
+
+        }
+}
+// Clientes predefinidos para pruebas
+function basenovacia(){
+    let nombre = 'Laura';
+    let apellido = 'Ascacibar';
+    let domicilio = 'Loredo 123';
+    let codigopostal = 1113;
+    let telefono = '11554477';
+    let dni = 23345465;
+    let cuit = 2323345463;
+    let nuevo = new Cliente(nombre, apellido, domicilio, codigopostal, telefono, dni, cuit);
+    baseClientes.agregar(nuevo);
+
+    let nombre1 = 'Jesus';
+    let apellido1 = 'Diaz';
+    let domicilio1 = 'Rivadavia 8200';
+    let codigopostal1 = 1403;
+    let telefono1 = '+5491159264703';
+    let dni1 = 33456167;
+    let cuit1 = 20334561674;
+    let nuevo1 = new Cliente(nombre1, apellido1, domicilio1, codigopostal1, telefono1, dni1, cuit1);
+    baseClientes.agregar(nuevo1);
+
+    let nombre2 = 'Lautaro';
+    let apellido2 = 'Gomez';
+    let domicilio2 = 'Yerbal 45';
+    let codigopostal2 = 1406;
+    let telefono2 = '11332288';
+    let dni2 = 23457856;
+    let cuit2 = 20234578564;
+    let nuevo2 = new Cliente(nombre2, apellido2, domicilio2, codigopostal2, telefono2, dni2, cuit2);
+    baseClientes.agregar(nuevo2);
+}
+function cargar(id){
+    function checkDNI(dni) {
+        return dni = parseInt(id); /* ESTO ES LO QUE HAY QUE BUSCAR EN LA BASEDECLIENTES*/
+    }
+    const found = baseClientes.clientes.findIndex(res => {
+        return res.dni === checkDNI();
+    })
+    console.log(id);
+    console.table(baseClientes.clientes[found]);
+    document.getElementById('nombre').value = baseClientes.clientes[found].nombre;
+    document.getElementById('apellido').value = baseClientes.clientes[found].apellido;
+    document.getElementById('domicilio').value = baseClientes.clientes[found].domicilio;
+    document.getElementById('codigopostal').value = baseClientes.clientes[found].codigopostal;
+    document.getElementById('telefono').value = baseClientes.clientes[found].telefono;
+    document.getElementById('dni').value = baseClientes.clientes[found].dni;
+    document.getElementById('cuit').value = baseClientes.clientes[found].cuit;
+    document.getElementById('guardar').value = 'Modificar';
+}
+
+function eliminar(id){
+    function checkDNI(dni) {
+        return dni = parseInt(id); /* ESTO ES LO QUE HAY QUE BUSCAR EN LA BASEDECLIENTES*/
+    }
+    const found = baseClientes.clientes.findIndex(res => {
+        return res.dni === checkDNI();
+    })
+    console.log(id);
+    console.table(baseClientes.clientes[found]);
+    baseClientes.clientes.splice(found, 1);
+    listar();
+}
+function segundolistado(){
+    listar()
+    let tablasimple = document.getElementById('tablasimple').hidden;
+    if (tablasimple == true) {
+        console.log('tabla simple escondida')
+        document.getElementById("tablasimple").hidden = false;
+        document.getElementById("tablacompuesta").hidden = true;
+    }else{
+        console.log('tabla compuesta escondida')
+        document.getElementById("tablasimple").hidden = true;
+        document.getElementById("tablacompuesta").hidden = false;
+    }
+}
+console.table(baseClientes);
