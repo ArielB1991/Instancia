@@ -1,163 +1,146 @@
 
-class Cliente{
-    constructor(nombre, apellido, domicilio, codigoPostal, telefono, dni, cuit){
-        this.nombre= nombre;
-        this.apellido= apellido;
-        this.codigoPostal= codigoPostal;
-        this.domicilio= domicilio;
-        this.telefono= telefono;
-        this.dni= dni;
-        this.cuit= cuit;
+
+//clase objeto cliente con sus parametros
+class Cliente {
+    constructor(nombre, apellido, domicilio, codigopostal, telefono, dni, cuit){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.codigopostal = codigopostal;
+        this.domicilio = domicilio;
+        this.telefono = telefono;
+        this.dni = dni;
+        this.cuit = cuit;
     }
 }
 
-class ListaClientes{
+//
+class CarteraClientes {
     constructor(clientes){
-        this.clientes=clientes;
+        this.clientes = clientes;
     }
-
+    //usa el metodo push para agregar un nuevo cliente a clienteNuevo
     agregar(clienteNuevo){
-        this.clientes.push(clienteNuevo)
+        this.clientes.push(clienteNuevo);
     }
 }
 
-let baseClientes= new ListaClientes([]);
+//instancia de CarteraClientes inicializa una lista vacia
+let baseClientes = new CarteraClientes([]);
 
 
 function ingresar(){
-    let nombre= document.getElementById("nombre").value;
-    let apellido= document.getElementById("apellido").value;
-    let domicilio= document.getElementById("domicilio").value;
-    let codigoPostal= Number(document.getElementById("codigoPostal").value);
-    let telefono= Number(document.getElementById("telefono").value);
-    let dni= Number(document.getElementById("dni").value);
-    let cuit= Number(document.getElementById("cuit").value);
-
-    document.getElementById("correcto").innerHTML= '';
-
-    if(document.getElementById('guardar').value == "Agregar"){
-        let validar= (()=> {
-            let mensaje= '';
-            if(nombre == ""){
-                mensaje += "Ingrese un nombre" + '\n';
-            }
-
-            if(apellido == ""){
-                mensaje += "Ingrese el apellido" + '\n';
-            }
-
-            if(domicilio == ""){
-                mensaje += "Ingrese el domicilio" + '\n';
-            }
-
-            if(domicilio == ""){
-                mensaje += "Ingrese el domicilio" + '\n'
-            }
-
-            if(codigoPostal == ""){
-                mensaje += "ingrese el codigo postal" + '\n';
-            }
-
-            if(telefono == ""){
-                mensaje += "Ingrese el telefono" + '\n'
-            }
-            if(dni == ""){
-                mensaje += "Ingrese el dni" + '\n'
-            }
-
-            if(cuit == ""){
-                mensaje += "Ingrese el dni"
-            }
-
-            function chequeoDni(){
-                return dni
-            }
-
-            const found= baseClientes.clientes.findIndex(res =>{
-                return res.dni === chequeoDni
-            });
-
-            console.table(`============> $ ${found}`);
-
-            if(found -1){
-                mensaje = "No se puede ingresar un Cliente existente, solo se lo puede modificar";
-            }
-
-            let parrafoErrores= document.getElementById("mensaje");
-            parrafoErrores.innerText = mensaje;
-            return mensaje == "" ? true : false;
-        
-        })
-        if (validar()){
-            let nuevoC= new Cliente(nombre, apellido, domicilio, codigoPostal, telefono, dni, cuit)
-                baseClientes.agregar(nuevoC);
-                document.getElementById("correcto").innerText = `Cliente ingresado correctamente`;
-                document.getElementById("formulario").reset();
-                console.table(baseClientes.clientes)
-             
-        }
-        document.getElementById("clientes-tbody").innerText = "" ;
-    } else{
-        let validarmodificacion = (() =>{
+    let nombre = document.getElementById("nombre").value;
+    let apellido = document.getElementById("apellido").value;
+    let domicilio = document.getElementById("domicilio").value;
+    let codigopostal = Number(document.getElementById("codigopostal").value);
+    let telefono = Number(document.getElementById("telefono").value);
+    let dni = Number(document.getElementById("dni").value);
+    let cuit = Number(document.getElementById("cuit").value);
+    document.getElementById("correcto").innerText = '';
+    if (document.getElementById('guardar').value == "Agregar"){
+        let validar = (() =>{
             let mensaje = "";
-            if (nombre == ""){
+            if (nombre == "") {
                 mensaje += "Ingrese un nombre" + '\n';
             }
-            if (apellido = ""){
-                mensaje += "Ingrese el apellido" + '\n';
+            if (apellido == "") {
+                mensaje += "Ingrese un apellido" + '\n';
             }
-            if (domicilio = ""){
-                mensaje += "Ingrese el domicilio" + "\n";
+            if (domicilio == "") {
+                mensaje += "Ingrese un domicilio" + '\n';
             }
-            if (codigoPostal = ""){
-                mensaje += "Ingrese el codigo postal" + '\n';
+            if (codigopostal == "") {
+                mensaje += "Ingrese un código postal" + '\n';
             }
-            if (telefono = ""){
-                mensaje += "Ingrese el telefono" + '\n';
+            if (telefono == "") {
+                mensaje += "Ingrese un teléfono" + '\n';
             }
-            if (dni = ""){
-                mensaje += "Ingrese el dni";
+            if (dni == "") {
+                mensaje += "Ingrese un DNI" + '\n';
             }
-            if (cuit = ""){
-                mensaje += "Ingrese el cuit" + '\n';
+            if (cuit == "") {
+                mensaje += "Ingrese un CUIT" + '\n';
             }
-
-            let parrafoErrores = document.getElementById("mensaje");
-            parrafoErrores.innerText = mensaje;
-            return mensaje == "" ? true : false;
-        } )
-
-        if (validarmodificacion()){
-            function chequeoDni(){
-                return dni
+            function checkDNI() {
+                return dni; /* ESTO ES LO QUE HAY QUE BUSCAR EN LA BASEDECLIENTES*/
             }
             const found = baseClientes.clientes.findIndex(res => {
-                return res.dni === chequeoDni;
+                return res.dni === checkDNI();
             })
-
-            console.table(`=======>>> ${found}`);
-            let nuevoC = new Cliente(nombre, apellido, domicilio, codigoPostal, telefono, dni, cuit)
-            baseClientes.clientes.splice(found, 1, nuevoC);
-            document.getElementById("correcto").innerText= `Cliente ingresado correctamente`;
+            console.table(`===========>>>>>> ${found}`);
+            if (found > -1){
+                mensaje = "No puede ingresar un Cliente existente, puede modificarlo.";
+            }
+            let parrafo_errores = document.getElementById("mensaje");
+            parrafo_errores.innerText = mensaje;
+            return mensaje == "" ? true : false;
+        })
+        if (validar()) {
+            let nuevo = new Cliente(nombre, apellido, domicilio, codigopostal, telefono, dni, cuit);
+            baseClientes.agregar(nuevo);
+            document.getElementById("correcto").innerText = `Cliente agregado correctamente`;
             document.getElementById("formulario").reset();
-            console.table(baseClientes.clientes)
+            console.table(baseClientes.clientes);
         }
-
         document.getElementById("clientes-tbody").innerText = "";
-        document.getElementById("guardar").value= "Agregar";
+    }else{
+        let validarmodificacion = (() =>{
+            let mensaje = "";
+            if (nombre == "") {
+                mensaje += "Ingrese un nombre" + '\n';
+            }
+            if (apellido == "") {
+                mensaje += "Ingrese un apellido" + '\n';
+            }
+            if (domicilio == "") {
+                mensaje += "Ingrese un domicilio" + '\n';
+            }
+            if (codigopostal == "") {
+                mensaje += "Ingrese un código postal" + '\n';
+            }
+            if (telefono == "") {
+                mensaje += "Ingrese un teléfono" + '\n';
+            }
+            if (dni == "") {
+                mensaje += "Ingrese un DNI" + '\n';
+            }
+            if (cuit == "") {
+                mensaje += "Ingrese un CUIT" + '\n';
+            }
+            let parrafo_errores = document.getElementById("mensaje");
+            parrafo_errores.innerText = mensaje;
+            return mensaje == "" ? true : false;
+        })
+
+        if (validarmodificacion()) {
+            function checkDNI() {
+                return dni; /* ESTO ES LO QUE HAY QUE BUSCAR EN LA BASEDECLIENTES*/
+            }
+            const found = baseClientes.clientes.findIndex(res => {
+                return res.dni === checkDNI();
+            })
+            console.table(`===========>>>>>> ${found}`);
+            let nuevo = new Cliente(nombre, apellido, domicilio, codigopostal, telefono, dni, cuit);
+            baseClientes.clientes.splice(found, 1, nuevo);
+            document.getElementById("correcto").innerText = `Cliente modificado correctamente`;
+            document.getElementById("formulario").reset();
+            console.table(baseClientes.clientes);
+        }
+        document.getElementById("clientes-tbody").innerText = "";
+        document.getElementById('guardar').value = "Agregar";
     }
 }
 
 function listar(){
-    document.getElementById('mensaje').innerText = "";
-    let resultado = document.getElementById('clientes-tbody');
-    let resultado2 = document.getElementById('clientessimple-tbody');
-        if(baseClientes.clientes == ""){
-            resultado.innerHTML = "No se ha guardado ningun cliente aun";
-        } else {
-            document.getElementById('clientes-tbody').innerHTML = "";
-            baseClientes.clientes.forEach(clientes => resultado.innerHTML += `
-            <tr>
+        document.getElementById("mensaje").innerText= "";
+        let resultado = document.getElementById("clientes-tbody");
+        let resultado2 = document.getElementById("clientessimple-tbody");
+    if (baseClientes.clientes ==""){
+        resultado.innerHTML = "No ha ingresado ningún cliente aún";
+    } else {
+        document.getElementById("clientes-tbody").innerHTML = ""
+        baseClientes.clientes.forEach(clientes => resultado.innerHTML += `
+        <tr>
             <td>${clientes.apellido}, ${clientes.nombre}</td>
             <td>${clientes.domicilio}</td>
             <td>${clientes.codigopostal}</td>
@@ -168,8 +151,8 @@ function listar(){
                 <button id="${clientes.dni}" type="button" onclick="cargar(this.id)" class="btn btn-outline-light btn-sm"><i class="bi bi-pencil-square text-dark"></i></a>
                 <button id="${clientes.dni}" type="button" onclick="eliminar(this.id)" class="btn btn-outline-light btn-sm"><i class="bi bi-trash3-fill text-danger"></i></button>
             </td>    
-        </tr>`)
-
+        </tr>`);
+        /**/
         document.getElementById("clientessimple-tbody").innerHTML = ""
         baseClientes.clientes.forEach(clientes => resultado2.innerHTML += `
         <tr>
@@ -178,9 +161,9 @@ function listar(){
         </tr>`);
     
         document.getElementById("correcto").innerText = "";
-
-        }
+    }
 }
+
 // Clientes predefinidos para pruebas
 function basenovacia(){
     let nombre = 'Laura';
